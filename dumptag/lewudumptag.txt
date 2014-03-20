@@ -1,0 +1,15 @@
+fs=require('fs')
+var arr=fs.readFileSync('jiangkangyur.lst','utf8').split('\n')
+var lewu=[];
+processfile=function(fn) {
+	file=fs.readFileSync(fn.trim(),'utf8');	
+	out=file.replace( /<lewu n="(.*?)" [^>]*?>/,function(m,m1){
+		lewu.push(m);
+		return "<LW"+m1.replace(/\./g,'_')+"/>";
+	})
+	fs.writeFileSync(fn+'.ok',out,'utf8');
+}
+for (var i in arr) {
+	processfile(arr[i]);
+}
+fs.writeFileSync('lewu.txt',lewu.join('\n'),'utf8')
